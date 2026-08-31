@@ -14,92 +14,92 @@
 
     <!-- CONTINENTES -->
 
-        <string-array name="continentes">
-            <item>América</item>
-            <item>África</item>
-            <item>Europa</item>
-            <item>Ásia</item>
-            <item>Oceania</item>
-        </string-array>
+    <string-array name="continentes">
+        <item>Selecione um continente</item>
+        <item>América</item>
+        <item>África</item>
+        <item>Europa</item>
+        <item>Ásia</item>
+        <item>Oceania</item>
+    </string-array>
+
+    <!-- TIPOS DE ESTABELECIMENTO -->
+
+    <string-array name="tipos_estabelecimento">
+        <item>Café</item>
+        <item>Bar</item>
+        <item>Restaurante</item>
+    </string-array>
 
 
-        <!-- TIPOS DE ESTABELECIMENTO -->
+    <!-- PAÍSES -->
 
-        <string-array name="tipos_estabelecimento">
-            <item>Café</item>
-            <item>Bar</item>
-            <item>Restaurante</item>
-        </string-array>
+    <string-array name="paises_america">
+        <item>Brasil</item>
+        <item>Paraguai</item>
+    </string-array>
 
+    <string-array name="paises_africa">
+        <item>Egito</item>
+        <item>Nigéria</item>
+    </string-array>
 
-        <!-- PAÍSES -->
+    <string-array name="paises_europa">
+        <item>Rússia</item>
+        <item>Grécia</item>
+    </string-array>
 
-        <string-array name="paises_america">
-            <item>Brasil</item>
-            <item>Paraguai</item>
-        </string-array>
+    <string-array name="paises_asia">
+        <item>Coreia do Sul</item>
+        <item>China</item>
+    </string-array>
 
-        <string-array name="paises_africa">
-            <item>Egito</item>
-            <item>Nigéria</item>
-        </string-array>
-
-        <string-array name="paises_europa">
-            <item>Rússia</item>
-            <item>Grécia</item>
-        </string-array>
-
-        <string-array name="paises_asia">
-            <item>Coreia do Sul</item>
-            <item>China</item>
-        </string-array>
-
-        <string-array name="paises_oceania">
-            <item>Austrália</item>
-            <item>Nova Zelândia</item>
-        </string-array>
+    <string-array name="paises_oceania">
+        <item>Austrália</item>
+        <item>Nova Zelândia</item>
+    </string-array>
 
 
-        <!-- CIDADES -->
+    <!-- CIDADES -->
 
-        <string-array name="cidades_brasil">
-            <item>Brasília</item>
-        </string-array>
+    <string-array name="cidades_brasil">
+        <item>Brasília</item>
+    </string-array>
 
-        <string-array name="cidades_paraguai">
-            <item>Assunção</item>
-        </string-array>
+    <string-array name="cidades_paraguai">
+        <item>Assunção</item>
+    </string-array>
 
-        <string-array name="cidades_egito">
-            <item>Cairo</item>
-        </string-array>
+    <string-array name="cidades_egito">
+        <item>Cairo</item>
+    </string-array>
 
-        <string-array name="cidades_nigeria">
-            <item>Abuja</item>
-        </string-array>
+    <string-array name="cidades_nigeria">
+        <item>Abuja</item>
+    </string-array>
 
-        <string-array name="cidades_russia">
-            <item>Moscou</item>
-        </string-array>
+    <string-array name="cidades_russia">
+        <item>Moscou</item>
+    </string-array>
 
-        <string-array name="cidades_grecia">
-            <item>Atenas</item>
-        </string-array>
+    <string-array name="cidades_grecia">
+        <item>Atenas</item>
+    </string-array>
 
-        <string-array name="cidades_coreia">
-            <item>Seul</item>
-        </string-array>
+    <string-array name="cidades_coreia">
+        <item>Seul</item>
+    </string-array>
 
-        <string-array name="cidades_china">
-            <item>Pequim</item>
-        </string-array>
+    <string-array name="cidades_china">
+        <item>Pequim</item>
+    </string-array>
 
-        <string-array name="cidades_australia">
-            <item>Canberra</item>
-        </string-array>
+    <string-array name="cidades_australia">
+        <item>Canberra</item>
+    </string-array>
 
-        <string-array name="cidades_nova_zelandia">
-            <item>Wellington</item>
-        </string-array>
+    <string-array name="cidades_nova_zelandia">
+        <item>Wellington</item>
+    </string-array>
 
-    </resources>
+</resources>

@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:id="@+id/nav_graph"
     app:startDestination="@id/continentesFragment">
 
@@ -9,6 +12,18 @@
         android:id="@+id/continentesFragment"
         android:name="com.example.viagempelomundo.fragments.ContinentesFragment"
         android:label="Escolha seu destino"
-        tools:layout="@layout/fragment_continentes" />
+        tools:layout="@layout/fragment_continentes">
+
+        <action
+            android:id="@+id/action_continentesFragment_to_estabelecimentosFragment"
+            app:destination="@id/estabelecimentosFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/estabelecimentosFragment"
+        android:name="com.example.viagempelomundo.fragments.EstabelecimentosFragment"
+        android:label="Estabelecimentos"
+        tools:layout="@layout/fragment_estabelecimentos" />
 
 </navigation>
