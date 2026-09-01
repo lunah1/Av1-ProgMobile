@@ -20,6 +20,13 @@ import com.example.viagempelomundo.databinding.ActivityMainBinding;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import android.content.SharedPreferences;
+import android.view.Menu;
+import android.view.MenuItem;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatDelegate;
+
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
@@ -28,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        carregarTema();
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -48,20 +57,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        if (item.getItemId() == R.id.action_settings) {
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+            mostrarConfiguracoes();
             return true;
         }
 
@@ -73,5 +77,76 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+    private void mostrarConfiguracoes() {
+
+        String[] opcoes = {
+                "Tema claro",
+                "Tema escuro"
+        };
+
+        new AlertDialog.Builder(this)
+                .setTitle("Configurações")
+                .setItems(opcoes, (dialog, which) -> {
+
+                    if (which == 0) {
+                        salvarTema(false);
+
+                        AppCompatDelegate.setDefaultNightMode(
+                                AppCompatDelegate.MODE_NIGHT_NO
+                        );
+                    }
+
+                    if (which == 1) {
+                        salvarTema(true);
+
+                        AppCompatDelegate.setDefaultNightMode(
+                                AppCompatDelegate.MODE_NIGHT_YES
+                        );
+                    }
+                })
+                .show();
+    }
+
+    private void salvarTema(boolean escuro) {
+
+        SharedPreferences preferences =
+                getSharedPreferences(
+                        "configuracoes",
+                        MODE_PRIVATE
+                );
+
+        preferences
+                .edit()
+                .putBoolean("tema_escuro", escuro)
+                .apply();
+    }
+
+    private void carregarTema() {
+
+        SharedPreferences preferences =
+                getSharedPreferences(
+                        "configuracoes",
+                        MODE_PRIVATE
+                );
+
+        boolean escuro =
+                preferences.getBoolean(
+                        "tema_escuro",
+                        false
+                );
+
+        if (escuro) {
+
+            AppCompatDelegate.setDefaultNightMode(
+                    AppCompatDelegate.MODE_NIGHT_YES
+            );
+
+        } else {
+
+            AppCompatDelegate.setDefaultNightMode(
+                    AppCompatDelegate.MODE_NIGHT_NO
+            );
+        }
     }
 }
