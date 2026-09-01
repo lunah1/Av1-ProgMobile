@@ -24,6 +24,18 @@
         android:id="@+id/estabelecimentosFragment"
         android:name="com.example.viagempelomundo.fragments.EstabelecimentosFragment"
         android:label="Estabelecimentos"
-        tools:layout="@layout/fragment_estabelecimentos" />
+        tools:layout="@layout/fragment_estabelecimentos">
+
+        <action
+            android:id="@+id/action_estabelecimentosFragment_to_pratosFragment"
+            app:destination="@id/pratosFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/pratosFragment"
+        android:name="com.example.viagempelomundo.fragments.PratosFragment"
+        android:label="Pratos e Bebidas"
+        tools:layout="@layout/fragment_pratos" />
 
 </navigation>

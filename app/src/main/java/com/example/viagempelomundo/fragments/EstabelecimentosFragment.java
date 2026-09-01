@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Button;
+import androidx.navigation.Navigation;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,6 +36,7 @@ public class EstabelecimentosFragment extends Fragment {
     private String pais;
     private String cidade;
     private String tipo;
+    private Button btnVerPratos;
 
     public EstabelecimentosFragment() {
     }
@@ -70,6 +73,15 @@ public class EstabelecimentosFragment extends Fragment {
                         .get(ViagemViewModel.class);
 
         observarFiltros();
+
+        btnVerPratos =
+                view.findViewById(R.id.btn_ver_pratos);
+
+        btnVerPratos.setOnClickListener(v ->
+                Navigation.findNavController(v).navigate(
+                        R.id.action_estabelecimentosFragment_to_pratosFragment
+                )
+        );
     }
 
     private void observarFiltros() {
