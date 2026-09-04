@@ -15,14 +15,15 @@
         android:text="Pratos e bebidas"
         android:textSize="22sp"
         android:textStyle="bold"
+        android:textColor="?android:attr/textColorPrimary"
         android:layout_marginBottom="16dp" />
 
     <GridView
         android:id="@+id/grid_view_pratos"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:numColumns="2"
-        android:horizontalSpacing="12dp"
-        android:verticalSpacing="12dp" />
+        android:numColumns="1"
+        android:verticalSpacing="12dp"
+        android:horizontalSpacing="0dp" />
 
 </LinearLayout>
