@@ -1,7 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.ViagemPeloMundo" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+
+    <style name="Base.Theme.ViagemPeloMundo"
+        parent="Theme.Material3.DayNight.NoActionBar">
+
+        <item name="colorPrimary">@color/dark_marrom</item>
+        <item name="colorSecondary">@color/dark_verde_oliva</item>
+
+        <item name="colorSurface">@color/dark_superficie</item>
+
+        <item name="android:colorBackground">@color/dark_fundo</item>
+        <item name="android:windowBackground">@color/dark_fundo</item>
+
+        <item name="android:textColorPrimary">@color/dark_texto</item>
+        <item name="android:textColorSecondary">@color/dark_texto_secundario</item>
+
     </style>
+
+    <style name="ToolbarTheme">
+        <item name="colorControlNormal">@color/dark_marrom</item>
+        <item name="android:textColorPrimary">@color/dark_verde_oliva</item>
+    </style>
+
+    <style name="Theme.ViagemPeloMundo"
+        parent="Base.Theme.ViagemPeloMundo" />
+
 </resources>

@@ -1,8 +1,20 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.ViagemPeloMundo" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/marrom</item>
+        <item name="colorSecondary">@color/verde_oliva</item>
+
+        <item name="colorSurface">@color/creme</item>
+
+        <item name="android:colorBackground">@color/creme</item>
+        <item name="android:windowBackground">@color/creme</item>
+
+        <item name="android:textColorPrimary">@color/marrom_escuro</item>
+    </style>
+
+    <style name="ToolbarTheme">
+        <item name="colorControlNormal">@color/marrom</item>
+        <item name="android:textColorPrimary">@color/verde_oliva</item>
     </style>
 
     <style name="Theme.ViagemPeloMundo" parent="Base.Theme.ViagemPeloMundo" />

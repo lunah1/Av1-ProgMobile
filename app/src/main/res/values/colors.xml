@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="marrom">#7F5539</color>
+    <color name="verde_oliva">#556C3B</color>
+    <color name="creme">#FFFCE9</color>
+    <color name="marrom_escuro">#3B2A1A</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+
+    <color name="dark_marrom">#C79B79</color>
+    <color name="dark_verde_oliva">#9AAF75</color>
+
+    <color name="dark_fundo">#1E1813</color>
+    <color name="dark_superficie">#2A211A</color>
+
+    <color name="dark_texto">#FFF3D6</color>
+    <color name="dark_texto_secundario">#D9C7AE</color>
 </resources>
