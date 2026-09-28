@@ -27,7 +27,8 @@ public class PratosFragment extends Fragment {
     private GridView gridViewPratos;
     private TextView txtTituloPratos;
 
-    private ViagemViewModel viagemViewModel;
+    private ViagemViewModel viagemViewModel = new ViewModelProvider(requireActivity())
+            .get(ViagemViewModel.class);
 
     public PratosFragment() {
     }
@@ -58,11 +59,6 @@ public class PratosFragment extends Fragment {
 
         txtTituloPratos =
                 view.findViewById(R.id.txt_titulo_pratos);
-
-        // Mesmo ViewModel usado pelos outros Fragmentos
-        viagemViewModel =
-                new ViewModelProvider(requireActivity())
-                        .get(ViagemViewModel.class);
 
         observarCidade();
     }
@@ -143,10 +139,6 @@ public class PratosFragment extends Fragment {
         ArrayList<Prato> pratos = new ArrayList<>();
 
         switch (cidade) {
-
-            // =========================
-            // BRASIL - BRASÍLIA
-            // =========================
             case "Brasília":
 
                 pratos.add(new Prato(
@@ -201,9 +193,6 @@ public class PratosFragment extends Fragment {
                 break;
 
 
-            // =========================
-            // PARAGUAI - ASSUNÇÃO
-            // =========================
             case "Assunção":
 
                 pratos.add(new Prato(
@@ -258,9 +247,6 @@ public class PratosFragment extends Fragment {
                 break;
 
 
-            // =========================
-            // EGITO - CAIRO
-            // =========================
             case "Cairo":
 
                 pratos.add(new Prato(
@@ -315,9 +301,7 @@ public class PratosFragment extends Fragment {
                 break;
 
 
-            // =========================
-            // NIGÉRIA - ABUJA
-            // =========================
+
             case "Abuja":
 
                 pratos.add(new Prato(
@@ -372,9 +356,6 @@ public class PratosFragment extends Fragment {
                 break;
 
 
-            // =========================
-            // RÚSSIA - MOSCOU
-            // =========================
             case "Moscou":
 
                 pratos.add(new Prato(
@@ -429,9 +410,6 @@ public class PratosFragment extends Fragment {
                 break;
 
 
-            // =========================
-            // GRÉCIA - ATENAS
-            // =========================
             case "Atenas":
 
                 pratos.add(new Prato(
@@ -486,9 +464,6 @@ public class PratosFragment extends Fragment {
                 break;
 
 
-            // =========================
-            // COREIA DO SUL - SEUL
-            // =========================
             case "Seul":
 
                 pratos.add(new Prato(
@@ -543,9 +518,6 @@ public class PratosFragment extends Fragment {
                 break;
 
 
-            // =========================
-            // CHINA - PEQUIM
-            // =========================
             case "Pequim":
 
                 pratos.add(new Prato(
@@ -600,9 +572,6 @@ public class PratosFragment extends Fragment {
                 break;
 
 
-            // =========================
-            // AUSTRÁLIA - CANBERRA
-            // =========================
             case "Canberra":
 
                 pratos.add(new Prato(
