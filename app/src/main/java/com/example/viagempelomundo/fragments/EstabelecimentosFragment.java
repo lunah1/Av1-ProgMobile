@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.viagempelomundo.R;
 import com.example.viagempelomundo.adapter.EstabelecimentoAdapter;
-import com.example.viagempelomundo.model.Estabelecimento;
+import com.example.viagempelomundo.entity.Estabelecimento;
 import com.example.viagempelomundo.viewmodel.ViagemViewModel;
 
 import android.content.Intent;
@@ -159,7 +159,7 @@ public class EstabelecimentosFragment extends Fragment {
                         "08:00 às 20:00",
                         "Estabelecimento fictício localizado em "
                                 + cidade + ".",
-                        android.R.drawable.ic_menu_gallery
+                        "ic_menu_gallery"
                 )
         );
 
@@ -174,7 +174,7 @@ public class EstabelecimentosFragment extends Fragment {
                         "10:00 às 22:00",
                         "Outra opção fictícia de "
                                 + tipo + " em " + cidade + ".",
-                        android.R.drawable.ic_menu_gallery
+                        "ic_menu_gallery"
                 )
         );
 
@@ -225,7 +225,7 @@ public class EstabelecimentosFragment extends Fragment {
 
                     intent.putExtra(
                             "imagem",
-                            estabelecimento.getImagem()
+                            estabelecimento.getCaminhoImagem()
                     );
 
                     startActivity(intent);
