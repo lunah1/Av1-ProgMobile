@@ -2,6 +2,7 @@ package com.example.viagempelomundo;
 
 import android.os.Bundle;
 
+import com.example.viagempelomundo.database.DatabaseInitializer;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        DatabaseInitializer.inicializar(this);
 
         setSupportActionBar(binding.toolbar);
 
