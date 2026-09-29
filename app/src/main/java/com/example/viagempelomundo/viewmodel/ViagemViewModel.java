@@ -1,56 +1,184 @@
 package com.example.viagempelomundo.viewmodel;
 
+import android.app.Application;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
-public class ViagemViewModel extends ViewModel {
+import com.example.viagempelomundo.entity.Estabelecimento;
+import com.example.viagempelomundo.entity.Prato;
+import com.example.viagempelomundo.entity.Usuario;
+import com.example.viagempelomundo.repository.ViagemRepository;
 
-    private final MutableLiveData<String> continenteSelecionado =
+import java.util.List;
+
+public class ViagemViewModel
+        extends AndroidViewModel {
+
+    private final ViagemRepository repository;
+
+
+
+    private final MutableLiveData<String>
+            continenteSelecionado =
             new MutableLiveData<>();
 
-    private final MutableLiveData<String> paisSelecionado =
+    private final MutableLiveData<String>
+            paisSelecionado =
             new MutableLiveData<>();
 
-    private final MutableLiveData<String> cidadeSelecionada =
+    private final MutableLiveData<String>
+            cidadeSelecionada =
             new MutableLiveData<>();
 
-    private final MutableLiveData<String> tipoSelecionado =
+    private final MutableLiveData<String>
+            tipoSelecionado =
             new MutableLiveData<>();
 
 
-    public void selecionarContinente(String continente) {
-        continenteSelecionado.setValue(continente);
+    public ViagemViewModel(
+            @NonNull Application application
+    ) {
+
+        super(application);
+
+        repository =
+                new ViagemRepository(application);
     }
 
-    public LiveData<String> getContinenteSelecionado() {
+
+
+    public void selecionarContinente(
+            String continente
+    ) {
+
+        continenteSelecionado.setValue(
+                continente
+        );
+    }
+
+
+    public LiveData<String>
+    getContinenteSelecionado() {
+
         return continenteSelecionado;
     }
 
 
-    public void selecionarPais(String pais) {
-        paisSelecionado.setValue(pais);
+
+    public void selecionarPais(
+            String pais
+    ) {
+
+        paisSelecionado.setValue(
+                pais
+        );
     }
 
-    public LiveData<String> getPaisSelecionado() {
+
+    public LiveData<String>
+    getPaisSelecionado() {
+
         return paisSelecionado;
     }
 
 
-    public void selecionarCidade(String cidade) {
-        cidadeSelecionada.setValue(cidade);
+    public void selecionarCidade(
+            String cidade
+    ) {
+
+        cidadeSelecionada.setValue(
+                cidade
+        );
     }
 
-    public LiveData<String> getCidadeSelecionada() {
+
+    public LiveData<String>
+    getCidadeSelecionada() {
+
         return cidadeSelecionada;
     }
 
 
-    public void selecionarTipo(String tipo) {
-        tipoSelecionado.setValue(tipo);
+    public void selecionarTipo(
+            String tipo
+    ) {
+
+        tipoSelecionado.setValue(
+                tipo
+        );
     }
 
-    public LiveData<String> getTipoSelecionado() {
+
+    public LiveData<String>
+    getTipoSelecionado() {
+
         return tipoSelecionado;
+    }
+
+
+    public LiveData<Usuario>
+    getUsuarioLogado() {
+
+        return repository.getUsuarioLogado();
+    }
+
+
+
+    public LiveData<List<Estabelecimento>>
+    buscarEstabelecimentos(
+            String continente,
+            String pais,
+            String cidade,
+            String tipo
+    ) {
+
+        return repository.buscarEstabelecimentos(
+                continente,
+                pais,
+                cidade,
+                tipo
+        );
+    }
+
+    public LiveData<List<Prato>>
+    buscarPratosPorCidade(
+            String cidade
+    ) {
+
+        return repository.buscarPratosPorCidade(
+                cidade
+        );
+    }
+
+    public void cadastrarUsuario(
+            Usuario usuario,
+            ViagemRepository.CadastroCallback callback
+    ) {
+
+        repository.cadastrarUsuario(
+                usuario,
+                callback
+        );
+    }
+
+    public void login(
+            String email,
+            String senha,
+            ViagemRepository.LoginCallback callback
+    ) {
+
+        repository.login(
+                email,
+                senha,
+                callback
+        );
+    }
+
+    public void logout() {
+
+        repository.logout();
     }
 }

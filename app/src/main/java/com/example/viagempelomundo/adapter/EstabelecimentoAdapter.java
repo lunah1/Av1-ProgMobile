@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.viagempelomundo.R;
-import com.example.viagempelomundo.model.Estabelecimento;
+import com.example.viagempelomundo.entity.Estabelecimento;
 
 import java.util.List;
 
@@ -78,9 +78,26 @@ public class EstabelecimentoAdapter
                         R.id.txt_descricao_estabelecimento
                 );
 
-        imagem.setImageResource(
-                estabelecimento.getImagem()
-        );
+        String caminhoImagem =
+                estabelecimento.getCaminhoImagem();
+
+        int imagemId =
+                context.getResources().getIdentifier(
+                        caminhoImagem,
+                        "drawable",
+                        context.getPackageName()
+                );
+
+        if (imagemId != 0) {
+
+            imagem.setImageResource(imagemId);
+
+        } else {
+
+            imagem.setImageResource(
+                    android.R.drawable.ic_menu_gallery
+            );
+        }
 
         nome.setText(
                 estabelecimento.getNome()

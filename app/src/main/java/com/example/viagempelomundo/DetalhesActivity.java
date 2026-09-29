@@ -48,17 +48,32 @@ public class DetalhesActivity extends AppCompatActivity {
         String nomeRecebido =
                 getIntent().getStringExtra("nome");
 
-        int imagemRecebida =
-                getIntent().getIntExtra(
-                        "imagem",
-                        0
+        String imagemRecebida =
+                getIntent().getStringExtra(
+                        "imagem"
                 );
-
 
         nome.setText(nomeRecebido);
 
-        if (imagemRecebida != 0) {
-            imagem.setImageResource(imagemRecebida);
+        if (imagemRecebida != null) {
+
+            int imagemId =
+                    getResources().getIdentifier(
+                            imagemRecebida,
+                            "drawable",
+                            getPackageName()
+                    );
+
+            if (imagemId != 0) {
+
+                imagem.setImageResource(imagemId);
+
+            } else {
+
+                imagem.setImageResource(
+                        android.R.drawable.ic_menu_gallery
+                );
+            }
         }
 
 

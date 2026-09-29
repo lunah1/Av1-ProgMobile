@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.viagempelomundo.R;
-import com.example.viagempelomundo.model.Prato;
+import com.example.viagempelomundo.entity.Prato;
 
 import java.util.List;
 
@@ -72,9 +72,26 @@ public class PratoAdapter extends BaseAdapter {
                         R.id.txt_nome_prato
                 );
 
-        imagem.setImageResource(
-                prato.getImagem()
-        );
+        String caminhoImagem =
+                prato.getCaminhoImagem();
+
+        int imagemId =
+                context.getResources().getIdentifier(
+                        caminhoImagem,
+                        "drawable",
+                        context.getPackageName()
+                );
+
+        if (imagemId != 0) {
+
+            imagem.setImageResource(imagemId);
+
+        } else {
+
+            imagem.setImageResource(
+                    android.R.drawable.ic_menu_gallery
+            );
+        }
 
         nome.setText(
                 prato.getNome()
