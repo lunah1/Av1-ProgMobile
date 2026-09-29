@@ -6,7 +6,21 @@
     xmlns:tools="http://schemas.android.com/tools"
 
     android:id="@+id/nav_graph"
-    app:startDestination="@id/continentesFragment">
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.viagempelomundo.fragments.LoginFragment"
+        android:label="Login"
+        tools:layout="@layout/fragment_login">
+
+        <action
+            android:id="@+id/action_loginFragment_to_continentesFragment"
+            app:destination="@id/continentesFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/continentesFragment"
