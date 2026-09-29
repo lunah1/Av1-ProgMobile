@@ -52,4 +52,10 @@
         android:label="Pratos e Bebidas"
         tools:layout="@layout/fragment_pratos" />
 
+    <action
+        android:id="@+id/action_global_loginFragment"
+        app:destination="@id/loginFragment"
+        app:popUpTo="@id/nav_graph"
+        app:popUpToInclusive="true" />
+
 </navigation>

@@ -143,8 +143,6 @@ public class ViagemViewModel
         );
     }
 
-
-
     public LiveData<List<Prato>>
     buscarPratosPorCidade(
             String cidade
@@ -153,5 +151,34 @@ public class ViagemViewModel
         return repository.buscarPratosPorCidade(
                 cidade
         );
+    }
+
+    public void cadastrarUsuario(
+            Usuario usuario,
+            ViagemRepository.CadastroCallback callback
+    ) {
+
+        repository.cadastrarUsuario(
+                usuario,
+                callback
+        );
+    }
+
+    public void login(
+            String email,
+            String senha,
+            ViagemRepository.LoginCallback callback
+    ) {
+
+        repository.login(
+                email,
+                senha,
+                callback
+        );
+    }
+
+    public void logout() {
+
+        repository.logout();
     }
 }

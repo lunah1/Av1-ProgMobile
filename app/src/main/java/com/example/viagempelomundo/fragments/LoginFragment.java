@@ -14,10 +14,15 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.example.viagempelomundo.CadastroActivity;
 
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
+
+import com.example.viagempelomundo.viewmodel.ViagemViewModel;
 import com.example.viagempelomundo.R;
 
 public class LoginFragment extends Fragment {
 
+    private ViagemViewModel viagemViewModel;
     private EditText editEmail;
     private EditText editSenha;
 
@@ -88,6 +93,12 @@ public class LoginFragment extends Fragment {
                         R.id.txt_erro_login
                 );
 
+        viagemViewModel =
+                new ViewModelProvider(
+                        requireActivity()
+                ).get(
+                        ViagemViewModel.class
+                );
 
         configurarBotoes();
     }
@@ -118,8 +129,7 @@ public class LoginFragment extends Fragment {
         String senha =
                 editSenha
                         .getText()
-                        .toString()
-                        .trim();
+                        .toString();
 
 
         if (email.isEmpty()) {
@@ -142,8 +152,39 @@ public class LoginFragment extends Fragment {
         }
 
 
-        txtErroLogin.setText("");
+        txtErroLogin.setText(
+                "Entrando..."
+        );
 
+
+        viagemViewModel.login(
+                email,
+                senha,
+                (
+                        sucesso,
+                        mensagem
+                ) -> {
+
+                    requireActivity()
+                            .runOnUiThread(
+                                    () -> {
+
+                                        if (sucesso) {
+
+                                            txtErroLogin.setText(
+                                                    "Login realizado com sucesso."
+                                            );
+
+                                        } else {
+
+                                            txtErroLogin.setText(
+                                                    mensagem
+                                            );
+                                        }
+                                    }
+                            );
+                }
+        );
     }
 
     private void abrirCadastro() {

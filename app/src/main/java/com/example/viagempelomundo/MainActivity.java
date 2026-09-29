@@ -1,14 +1,14 @@
 package com.example.viagempelomundo;
 
 import android.os.Bundle;
-
 import com.example.viagempelomundo.database.DatabaseInitializer;
 import com.google.android.material.snackbar.Snackbar;
-
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import com.example.viagempelomundo.entity.Usuario;
+import com.example.viagempelomundo.viewmodel.ViagemViewModel;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.view.View;
-
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -30,6 +30,11 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 public class MainActivity extends AppCompatActivity {
 
+    private ViagemViewModel viagemViewModel;
+
+    private NavController navController;
+
+    private Usuario usuarioLogado;
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
 
@@ -48,20 +53,110 @@ public class MainActivity extends AppCompatActivity {
 
         NavHostFragment navHostFragment =
                 (NavHostFragment) getSupportFragmentManager()
-                        .findFragmentById(R.id.nav_host_fragment_content_main);
+                        .findFragmentById(
+                                R.id.nav_host_fragment_content_main
+                        );
 
-        NavController navController =
+        navController =
                 navHostFragment.getNavController();
 
-        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
+        appBarConfiguration =
+                new AppBarConfiguration.Builder(
+                        navController.getGraph()
+                ).build();
+
+
+        NavigationUI.setupActionBarWithNavController(
+                this,
+                navController,
+                appBarConfiguration
+        );
+
+
+        viagemViewModel =
+                new ViewModelProvider(this)
+                        .get(
+                                ViagemViewModel.class
+                        );
+
+
+        observarSessao();
+
+    }
+
+
+    private void observarSessao() {
+
+        viagemViewModel
+                .getUsuarioLogado()
+                .observe(
+                        this,
+                        usuario -> {
+
+                            usuarioLogado = usuario;
+
+
+                            if (usuario == null) {
+
+                                // Não existe usuário logado.
+                                // Deve estar no Login.
+
+                                if (navController.getCurrentDestination() != null
+                                        && navController
+                                        .getCurrentDestination()
+                                        .getId()
+                                        != R.id.loginFragment) {
+
+                                    navController.navigate(
+                                            R.id.action_global_loginFragment
+                                    );
+                                }
+
+                            } else {
+
+                                // Existe sessão ativa.
+
+                                if (navController.getCurrentDestination() != null
+                                        && navController
+                                        .getCurrentDestination()
+                                        .getId()
+                                        == R.id.loginFragment) {
+
+                                    navController.navigate(
+                                            R.id.action_loginFragment_to_continentesFragment
+                                    );
+                                }
+                            }
+                        }
+                );
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if (usuarioLogado != null
+                && navController != null
+                && navController.getCurrentDestination() != null
+                && navController.getCurrentDestination().getId()
+                == R.id.continentesFragment) {
+
+            // Usuário está logado e está na tela principal.
+            // Voltar NÃO deve abrir Login.
+
+            finish();
+
+            return;
+        }
+
+
+        super.onBackPressed();
     }
 
     @Override
@@ -85,29 +180,44 @@ public class MainActivity extends AppCompatActivity {
 
         String[] opcoes = {
                 "Tema claro",
-                "Tema escuro"
+                "Tema escuro",
+                "Sair"
         };
 
         new AlertDialog.Builder(this)
                 .setTitle("Configurações")
-                .setItems(opcoes, (dialog, which) -> {
+                .setItems(
+                        opcoes,
+                        (dialog, which) -> {
 
-                    if (which == 0) {
-                        salvarTema(false);
+                            if (which == 0) {
 
-                        AppCompatDelegate.setDefaultNightMode(
-                                AppCompatDelegate.MODE_NIGHT_NO
-                        );
-                    }
+                                salvarTema(false);
 
-                    if (which == 1) {
-                        salvarTema(true);
+                                AppCompatDelegate
+                                        .setDefaultNightMode(
+                                                AppCompatDelegate.MODE_NIGHT_NO
+                                        );
+                            }
 
-                        AppCompatDelegate.setDefaultNightMode(
-                                AppCompatDelegate.MODE_NIGHT_YES
-                        );
-                    }
-                })
+
+                            if (which == 1) {
+
+                                salvarTema(true);
+
+                                AppCompatDelegate
+                                        .setDefaultNightMode(
+                                                AppCompatDelegate.MODE_NIGHT_YES
+                                        );
+                            }
+
+
+                            if (which == 2) {
+
+                                confirmarLogout();
+                            }
+                        }
+                )
                 .show();
     }
 
@@ -151,5 +261,26 @@ public class MainActivity extends AppCompatActivity {
                     AppCompatDelegate.MODE_NIGHT_NO
             );
         }
+    }
+
+    private void confirmarLogout() {
+
+        new AlertDialog.Builder(this)
+                .setTitle("Sair")
+                .setMessage(
+                        "Deseja realmente sair da sua conta?"
+                )
+                .setPositiveButton(
+                        "Sair",
+                        (dialog, which) -> {
+
+                            viagemViewModel.logout();
+                        }
+                )
+                .setNegativeButton(
+                        "Cancelar",
+                        null
+                )
+                .show();
     }
 }
