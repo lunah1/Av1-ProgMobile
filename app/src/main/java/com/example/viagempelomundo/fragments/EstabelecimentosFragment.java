@@ -1,52 +1,63 @@
 package com.example.viagempelomundo.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Button;
-import androidx.navigation.Navigation;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
+import com.example.viagempelomundo.DetalhesActivity;
 import com.example.viagempelomundo.R;
 import com.example.viagempelomundo.adapter.EstabelecimentoAdapter;
 import com.example.viagempelomundo.entity.Estabelecimento;
 import com.example.viagempelomundo.viewmodel.ViagemViewModel;
 
-import android.content.Intent;
-
-import com.example.viagempelomundo.DetalhesActivity;
-
 import java.util.ArrayList;
 
-public class EstabelecimentosFragment extends Fragment {
+public class EstabelecimentosFragment
+        extends Fragment {
 
     private ListView listViewEstabelecimentos;
+
     private TextView txtContinenteSelecionado;
 
+    private Button btnVerPratos;
+
     private ViagemViewModel viagemViewModel;
+
+    private EstabelecimentoAdapter adapter;
+
+    private final ArrayList<Estabelecimento>
+            listaEstabelecimentos =
+            new ArrayList<>();
+
 
     private String continente;
     private String pais;
     private String cidade;
     private String tipo;
-    private Button btnVerPratos;
+
 
     public EstabelecimentosFragment() {
     }
+
 
     @Nullable
     @Override
     public View onCreateView(
             @NonNull LayoutInflater inflater,
             @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
+            @Nullable Bundle savedInstanceState
+    ) {
 
         return inflater.inflate(
                 R.layout.fragment_estabelecimentos,
@@ -55,34 +66,105 @@ public class EstabelecimentosFragment extends Fragment {
         );
     }
 
+
     @Override
     public void onViewCreated(
             @NonNull View view,
-            @Nullable Bundle savedInstanceState) {
+            @Nullable Bundle savedInstanceState
+    ) {
 
-        super.onViewCreated(view, savedInstanceState);
+        super.onViewCreated(
+                view,
+                savedInstanceState
+        );
+
 
         txtContinenteSelecionado =
-                view.findViewById(R.id.txt_continente_selecionado);
+                view.findViewById(
+                        R.id.txt_continente_selecionado
+                );
+
 
         listViewEstabelecimentos =
-                view.findViewById(R.id.list_view_estabelecimentos);
+                view.findViewById(
+                        R.id.list_view_estabelecimentos
+                );
+
+
+        btnVerPratos =
+                view.findViewById(
+                        R.id.btn_ver_pratos
+                );
+
 
         viagemViewModel =
-                new ViewModelProvider(requireActivity())
-                        .get(ViagemViewModel.class);
+                new ViewModelProvider(
+                        requireActivity()
+                ).get(
+                        ViagemViewModel.class
+                );
+
+
+        configurarAdapter();
 
         observarFiltros();
 
-        btnVerPratos =
-                view.findViewById(R.id.btn_ver_pratos);
 
-        btnVerPratos.setOnClickListener(v ->
-                Navigation.findNavController(v).navigate(
-                        R.id.action_estabelecimentosFragment_to_pratosFragment
-                )
+        btnVerPratos.setOnClickListener(
+                v ->
+                        Navigation
+                                .findNavController(v)
+                                .navigate(
+                                        R.id.action_estabelecimentosFragment_to_pratosFragment
+                                )
         );
     }
+
+
+    // =============================
+    // ADAPTER
+    // =============================
+
+    private void configurarAdapter() {
+
+        adapter =
+                new EstabelecimentoAdapter(
+                        requireContext(),
+                        listaEstabelecimentos
+                );
+
+
+        listViewEstabelecimentos
+                .setAdapter(
+                        adapter
+                );
+
+
+        listViewEstabelecimentos
+                .setOnItemClickListener(
+                        (
+                                parent,
+                                view,
+                                position,
+                                id
+                        ) -> {
+
+                            Estabelecimento estabelecimento =
+                                    listaEstabelecimentos
+                                            .get(position);
+
+
+                            abrirDetalhes(
+                                    estabelecimento
+                            );
+                        }
+                );
+    }
+
+
+    // =============================
+    // OBSERVA FILTROS
+    // =============================
 
     private void observarFiltros() {
 
@@ -93,9 +175,11 @@ public class EstabelecimentosFragment extends Fragment {
                         valor -> {
 
                             continente = valor;
-                            atualizarLista();
+
+                            tentarBuscar();
                         }
                 );
+
 
         viagemViewModel
                 .getPaisSelecionado()
@@ -104,9 +188,11 @@ public class EstabelecimentosFragment extends Fragment {
                         valor -> {
 
                             pais = valor;
-                            atualizarLista();
+
+                            tentarBuscar();
                         }
                 );
+
 
         viagemViewModel
                 .getCidadeSelecionada()
@@ -115,9 +201,11 @@ public class EstabelecimentosFragment extends Fragment {
                         valor -> {
 
                             cidade = valor;
-                            atualizarLista();
+
+                            tentarBuscar();
                         }
                 );
+
 
         viagemViewModel
                 .getTipoSelecionado()
@@ -126,12 +214,19 @@ public class EstabelecimentosFragment extends Fragment {
                         valor -> {
 
                             tipo = valor;
-                            atualizarLista();
+
+                            tentarBuscar();
                         }
                 );
     }
 
-    private void atualizarLista() {
+
+    // =============================
+    // VERIFICA SE TODOS OS FILTROS
+    // JÁ FORAM SELECIONADOS
+    // =============================
+
+    private void tentarBuscar() {
 
         if (continente == null
                 || pais == null
@@ -141,95 +236,107 @@ public class EstabelecimentosFragment extends Fragment {
             return;
         }
 
-        txtContinenteSelecionado.setText(
-                tipo + " - " + cidade
-        );
 
-        ArrayList<Estabelecimento> lista =
-                new ArrayList<>();
-
-        lista.add(
-                new Estabelecimento(
-                        tipo + " Central de " + cidade,
-                        continente,
-                        pais,
-                        cidade,
-                        tipo,
-                        "Rua Central, 100 - " + cidade,
-                        "08:00 às 20:00",
-                        "Estabelecimento fictício localizado em "
-                                + cidade + ".",
-                        "ic_menu_gallery"
-                )
-        );
-
-        lista.add(
-                new Estabelecimento(
-                        tipo + " Imperial de " + cidade,
-                        continente,
-                        pais,
-                        cidade,
-                        tipo,
-                        "Avenida Principal, 200 - " + cidade,
-                        "10:00 às 22:00",
-                        "Outra opção fictícia de "
-                                + tipo + " em " + cidade + ".",
-                        "ic_menu_gallery"
-                )
-        );
-
-        EstabelecimentoAdapter adapter =
-                new EstabelecimentoAdapter(
-                        requireContext(),
-                        lista
+        txtContinenteSelecionado
+                .setText(
+                        tipo + " - " + cidade
                 );
 
-        listViewEstabelecimentos.setAdapter(adapter);
 
-        listViewEstabelecimentos.setOnItemClickListener(
-                (parent, view, position, id) -> {
+        buscarEstabelecimentos();
+    }
 
-                    Estabelecimento estabelecimento =
-                            lista.get(position);
 
-                    Intent intent =
-                            new Intent(
-                                    requireContext(),
-                                    DetalhesActivity.class
-                            );
+    // =============================
+    // BUSCA NO ROOM
+    // =============================
 
-                    intent.putExtra(
-                            "tipo_item",
-                            "estabelecimento"
-                    );
+    private void buscarEstabelecimentos() {
 
-                    intent.putExtra(
-                            "nome",
-                            estabelecimento.getNome()
-                    );
+        viagemViewModel
+                .buscarEstabelecimentos(
+                        continente,
+                        pais,
+                        cidade,
+                        tipo
+                )
+                .observe(
+                        getViewLifecycleOwner(),
+                        estabelecimentos -> {
 
-                    intent.putExtra(
-                            "endereco",
-                            estabelecimento.getEndereco()
-                    );
+                            listaEstabelecimentos
+                                    .clear();
 
-                    intent.putExtra(
-                            "horario",
-                            estabelecimento.getHorario()
-                    );
 
-                    intent.putExtra(
-                            "descricao",
-                            estabelecimento.getDescricao()
-                    );
+                            if (estabelecimentos != null) {
 
-                    intent.putExtra(
-                            "imagem",
-                            estabelecimento.getCaminhoImagem()
-                    );
+                                listaEstabelecimentos
+                                        .addAll(
+                                                estabelecimentos
+                                        );
+                            }
 
-                    startActivity(intent);
-                }
+
+                            adapter
+                                    .notifyDataSetChanged();
+                        }
+                );
+    }
+
+
+    // =============================
+    // DETAILS ACTIVITY
+    // =============================
+
+    private void abrirDetalhes(
+            Estabelecimento estabelecimento
+    ) {
+
+        Intent intent =
+                new Intent(
+                        requireContext(),
+                        DetalhesActivity.class
+                );
+
+
+        intent.putExtra(
+                "tipo_item",
+                "estabelecimento"
+        );
+
+
+        intent.putExtra(
+                "nome",
+                estabelecimento.getNome()
+        );
+
+
+        intent.putExtra(
+                "endereco",
+                estabelecimento.getEndereco()
+        );
+
+
+        intent.putExtra(
+                "horario",
+                estabelecimento.getHorario()
+        );
+
+
+        intent.putExtra(
+                "descricao",
+                estabelecimento.getDescricao()
+        );
+
+
+        intent.putExtra(
+                "imagem",
+                estabelecimento.getCaminhoImagem()
+        );
+
+
+        startActivity(
+                intent
         );
     }
 }
