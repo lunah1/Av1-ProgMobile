@@ -4,11 +4,13 @@ import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 
+import com.example.viagempelomundo.dao.CategoriaDao;
 import com.example.viagempelomundo.dao.EstabelecimentoDao;
 import com.example.viagempelomundo.dao.PratoDao;
 import com.example.viagempelomundo.dao.SessaoDao;
 import com.example.viagempelomundo.dao.UsuarioDao;
 import com.example.viagempelomundo.database.AppDatabase;
+import com.example.viagempelomundo.repository.ViagemRepository;
 import com.example.viagempelomundo.entity.Estabelecimento;
 import com.example.viagempelomundo.entity.Prato;
 import com.example.viagempelomundo.entity.Usuario;
@@ -16,6 +18,7 @@ import com.example.viagempelomundo.entity.Sessao;
 import com.example.viagempelomundo.util.SenhaUtils;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import com.example.viagempelomundo.entity.CategoriaComEstabelecimentos;
 
 import java.util.List;
 
@@ -26,24 +29,22 @@ public class ViagemRepository {
     private final SessaoDao sessaoDao;
     private final EstabelecimentoDao estabelecimentoDao;
     private final PratoDao pratoDao;
-
+    private final CategoriaDao categoriaDao;
 
     public ViagemRepository(Context context) {
 
         AppDatabase database =
                 AppDatabase.getInstance(context);
-
         usuarioDao =
                 database.usuarioDao();
-
         sessaoDao =
                 database.sessaoDao();
-
         estabelecimentoDao =
                 database.estabelecimentoDao();
-
         pratoDao =
                 database.pratoDao();
+        categoriaDao =
+                database.categoriaDao();
     }
 
     public LiveData<Usuario> getUsuarioLogado() {
@@ -91,6 +92,17 @@ public class ViagemRepository {
     listarPratos() {
 
         return pratoDao.listarTodos();
+    }
+
+    public LiveData<CategoriaComEstabelecimentos>
+    buscarCategoriaComEstabelecimentos(
+            int categoriaId
+    ) {
+
+        return categoriaDao
+                .buscarCategoriaComEstabelecimentos(
+                        categoriaId
+                );
     }
 
     public void logout() {
@@ -223,6 +235,112 @@ public class ViagemRepository {
                 callback.onResultado(
                         false,
                         "Não foi possível realizar o cadastro."
+                );
+            }
+        });
+    }
+
+    public interface UsuarioCallback {
+
+        void onResultado(
+                Usuario usuario
+        );
+    }
+
+    public void buscarUsuarioPorId(
+            int id,
+            UsuarioCallback callback
+    ) {
+
+        executor.execute(() -> {
+
+            Usuario usuario =
+                    usuarioDao.buscarPorId(
+                            id
+                    );
+
+
+            callback.onResultado(
+                    usuario
+            );
+        });
+    }
+
+    public void atualizarUsuario(
+            Usuario usuario,
+            CadastroCallback callback
+    ) {
+
+        executor.execute(() -> {
+
+            try {
+
+                Usuario existente =
+                        usuarioDao.buscarPorEmail(
+                                usuario.getEmail()
+                        );
+
+                if (existente != null
+                        && existente.getId()
+                        != usuario.getId()) {
+
+                    callback.onResultado(
+                            false,
+                            "Esse e-mail já está sendo usado por outro perfil."
+                    );
+
+                    return;
+                }
+
+
+                usuarioDao.atualizar(
+                        usuario
+                );
+
+
+                callback.onResultado(
+                        true,
+                        "Perfil atualizado com sucesso."
+                );
+
+            } catch (Exception e) {
+
+                callback.onResultado(
+                        false,
+                        "Não foi possível atualizar o perfil."
+                );
+            }
+        });
+    }
+
+    public void excluirUsuario(
+            Usuario usuario,
+            CadastroCallback callback
+    ) {
+
+        executor.execute(() -> {
+
+            try {
+
+                // Primeiro encerra a sessão
+                sessaoDao.encerrarSessao();
+
+                // Depois exclui o usuário
+                usuarioDao.excluir(
+                        usuario
+                );
+
+
+                callback.onResultado(
+                        true,
+                        "Perfil excluído com sucesso."
+                );
+
+            } catch (Exception e) {
+
+                callback.onResultado(
+                        false,
+                        "Não foi possível excluir o perfil."
                 );
             }
         });

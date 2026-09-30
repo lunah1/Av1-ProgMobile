@@ -13,11 +13,15 @@ import java.util.List;
 public interface EstabelecimentoDao {
 
     @Insert
-    void inserir(Estabelecimento estabelecimento);
+    void inserir(
+            Estabelecimento estabelecimento
+    );
 
 
     @Insert
-    void inserirTodos(List<Estabelecimento> estabelecimentos);
+    void inserirTodos(
+            List<Estabelecimento> estabelecimentos
+    );
 
 
     @Query("SELECT * FROM estabelecimentos")
@@ -25,11 +29,14 @@ public interface EstabelecimentoDao {
 
 
     @Query(
-            "SELECT * FROM estabelecimentos " +
-                    "WHERE continente = :continente " +
-                    "AND pais = :pais " +
-                    "AND cidade = :cidade " +
-                    "AND tipo = :tipo"
+            "SELECT e.* " +
+                    "FROM estabelecimentos e " +
+                    "INNER JOIN categorias c " +
+                    "ON e.categoriaId = c.id " +
+                    "WHERE e.continente = :continente " +
+                    "AND e.pais = :pais " +
+                    "AND e.cidade = :cidade " +
+                    "AND c.nome = :tipo"
     )
     LiveData<List<Estabelecimento>> filtrar(
             String continente,

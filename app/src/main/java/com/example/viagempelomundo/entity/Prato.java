@@ -27,7 +27,6 @@ public class Prato {
             String caminhoImagem,
             String caminhoAudio
     ) {
-
         this.nome = nome;
         this.cidade = cidade;
         this.ingredientes = ingredientes;
