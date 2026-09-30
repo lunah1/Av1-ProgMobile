@@ -9,66 +9,38 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp"
-        android:background="?android:attr/colorBackground">
+        android:padding="20dp">
 
         <ImageView
             android:id="@+id/img_detalhe"
             android:layout_width="match_parent"
             android:layout_height="220dp"
             android:scaleType="centerCrop"
+            android:src="@mipmap/ic_launcher"
             android:contentDescription="Imagem do item" />
 
         <TextView
             android:id="@+id/txt_nome_detalhe"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="20dp"
             android:text="Nome"
-            android:textSize="24sp"
+            android:textSize="26sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/txt_endereco_detalhe"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="Endereço" />
-
-        <TextView
-            android:id="@+id/txt_horario_detalhe"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Horário" />
-
-        <TextView
-            android:id="@+id/txt_ingredientes_detalhe"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Ingredientes" />
-
-        <TextView
-            android:id="@+id/txt_cultural_detalhe"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Informação cultural" />
-
-        <TextView
             android:id="@+id/txt_descricao_detalhe"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Descrição" />
-
-        <Button
-            android:id="@+id/btn_encerrar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Encerrar" />
+            android:layout_marginTop="18dp"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/txt_informacao_extra"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:textSize="16sp" />
 
     </LinearLayout>
 

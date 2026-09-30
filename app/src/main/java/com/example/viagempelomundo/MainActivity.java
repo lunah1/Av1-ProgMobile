@@ -1,5 +1,6 @@
 package com.example.viagempelomundo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import com.example.viagempelomundo.database.DatabaseInitializer;
 import com.google.android.material.snackbar.Snackbar;
@@ -8,33 +9,31 @@ import androidx.navigation.NavController;
 import com.example.viagempelomundo.entity.Usuario;
 import com.example.viagempelomundo.viewmodel.ViagemViewModel;
 import androidx.appcompat.app.AppCompatActivity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import androidx.navigation.NavController;
+import android.widget.ImageView;
+import android.widget.TextView;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import androidx.navigation.fragment.NavHostFragment;
-
 import com.example.viagempelomundo.databinding.ActivityMainBinding;
-
-import android.view.Menu;
-import android.view.MenuItem;
-
 import android.content.SharedPreferences;
-import android.view.Menu;
-import android.view.MenuItem;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDelegate;
 
 public class MainActivity extends AppCompatActivity {
 
     private ViagemViewModel viagemViewModel;
-
     private NavController navController;
-
     private Usuario usuarioLogado;
+    private ImageView imgUsuarioToolbar;
+    private TextView txtUsuarioToolbar;
+    private MenuItem itemUsuarioToolbar;
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
 
@@ -63,7 +62,8 @@ public class MainActivity extends AppCompatActivity {
 
         appBarConfiguration =
                 new AppBarConfiguration.Builder(
-                        navController.getGraph()
+                        R.id.loginFragment,
+                        R.id.continentesFragment
                 ).build();
 
 
@@ -85,6 +85,110 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(
+                R.menu.menu_main,
+                menu
+        );
+
+
+        itemUsuarioToolbar =
+                menu.findItem(
+                        R.id.action_usuario
+                );
+
+
+        View actionView =
+                itemUsuarioToolbar.getActionView();
+
+
+        if (actionView != null) {
+
+            imgUsuarioToolbar =
+                    actionView.findViewById(
+                            R.id.img_usuario_toolbar
+                    );
+
+
+            txtUsuarioToolbar =
+                    actionView.findViewById(
+                            R.id.txt_usuario_toolbar
+                    );
+
+
+            actionView.setOnClickListener(
+                    v -> mostrarConfiguracoes()
+            );
+        }
+
+
+        atualizarUsuarioToolbar();
+
+
+        return true;
+    }
+
+    private void atualizarUsuarioToolbar() {
+
+        if (itemUsuarioToolbar == null) {
+            return;
+        }
+
+
+        if (usuarioLogado == null) {
+
+            itemUsuarioToolbar.setVisible(
+                    false
+            );
+
+            return;
+        }
+
+
+        itemUsuarioToolbar.setVisible(
+                true
+        );
+
+
+        if (txtUsuarioToolbar != null) {
+
+            txtUsuarioToolbar.setText(
+                    usuarioLogado.getNome()
+            );
+        }
+
+
+        if (imgUsuarioToolbar != null) {
+
+            byte[] foto =
+                    usuarioLogado.getFoto();
+
+
+            if (foto != null
+                    && foto.length > 0) {
+
+                Bitmap bitmap =
+                        BitmapFactory.decodeByteArray(
+                                foto,
+                                0,
+                                foto.length
+                        );
+
+
+                imgUsuarioToolbar.setImageBitmap(
+                        bitmap
+                );
+
+            } else {
+
+                imgUsuarioToolbar.setImageResource(
+                        R.mipmap.ic_launcher
+                );
+            }
+        }
+    }
 
     private void observarSessao() {
 
@@ -95,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
                         usuario -> {
 
                             usuarioLogado = usuario;
-
+                            atualizarUsuarioToolbar();
 
                             if (usuario == null) {
 
@@ -130,12 +234,6 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                 );
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
     }
 
     @Override
@@ -179,6 +277,7 @@ public class MainActivity extends AppCompatActivity {
     private void mostrarConfiguracoes() {
 
         String[] opcoes = {
+                "Editar Perfil",
                 "Tema claro",
                 "Tema escuro",
                 "Sair"
@@ -192,6 +291,12 @@ public class MainActivity extends AppCompatActivity {
 
                             if (which == 0) {
 
+                                abrirEdicaoPerfil();
+                            }
+
+
+                            if (which == 1) {
+
                                 salvarTema(false);
 
                                 AppCompatDelegate
@@ -201,7 +306,7 @@ public class MainActivity extends AppCompatActivity {
                             }
 
 
-                            if (which == 1) {
+                            if (which == 2) {
 
                                 salvarTema(true);
 
@@ -212,13 +317,44 @@ public class MainActivity extends AppCompatActivity {
                             }
 
 
-                            if (which == 2) {
+                            if (which == 3) {
 
                                 confirmarLogout();
                             }
                         }
                 )
                 .show();
+    }
+
+    private void abrirEdicaoPerfil() {
+
+        if (usuarioLogado == null) {
+            return;
+        }
+
+
+        Intent intent =
+                new Intent(
+                        this,
+                        CadastroActivity.class
+                );
+
+
+        intent.putExtra(
+                "modo_edicao",
+                true
+        );
+
+
+        intent.putExtra(
+                "usuario_id",
+                usuarioLogado.getId()
+        );
+
+
+        startActivity(
+                intent
+        );
     }
 
     private void salvarTema(boolean escuro) {

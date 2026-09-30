@@ -25,7 +25,7 @@
     <fragment
         android:id="@+id/continentesFragment"
         android:name="com.example.viagempelomundo.fragments.ContinentesFragment"
-        android:label="Escolha seu destino"
+        android:label="Viagem pelo mundo"
         tools:layout="@layout/fragment_continentes">
 
         <action

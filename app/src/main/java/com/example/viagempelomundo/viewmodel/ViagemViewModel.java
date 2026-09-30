@@ -11,16 +11,13 @@ import com.example.viagempelomundo.entity.Estabelecimento;
 import com.example.viagempelomundo.entity.Prato;
 import com.example.viagempelomundo.entity.Usuario;
 import com.example.viagempelomundo.repository.ViagemRepository;
+import com.example.viagempelomundo.entity.CategoriaComEstabelecimentos;
 
 import java.util.List;
 
 public class ViagemViewModel
         extends AndroidViewModel {
-
     private final ViagemRepository repository;
-
-
-
     private final MutableLiveData<String>
             continenteSelecionado =
             new MutableLiveData<>();
@@ -48,7 +45,16 @@ public class ViagemViewModel
                 new ViagemRepository(application);
     }
 
+    public void buscarUsuarioPorId(
+            int id,
+            ViagemRepository.UsuarioCallback callback
+    ) {
 
+        repository.buscarUsuarioPorId(
+                id,
+                callback
+        );
+    }
 
     public void selecionarContinente(
             String continente
@@ -65,7 +71,6 @@ public class ViagemViewModel
 
         return continenteSelecionado;
     }
-
 
 
     public void selecionarPais(
@@ -143,6 +148,17 @@ public class ViagemViewModel
         );
     }
 
+    public LiveData<CategoriaComEstabelecimentos>
+    buscarCategoriaComEstabelecimentos(
+            int categoriaId
+    ) {
+
+        return repository
+                .buscarCategoriaComEstabelecimentos(
+                        categoriaId
+                );
+    }
+
     public LiveData<List<Prato>>
     buscarPratosPorCidade(
             String cidade
@@ -180,5 +196,28 @@ public class ViagemViewModel
     public void logout() {
 
         repository.logout();
+    }
+
+    public void atualizarUsuario(
+            Usuario usuario,
+            ViagemRepository.CadastroCallback callback
+    ) {
+
+        repository.atualizarUsuario(
+                usuario,
+                callback
+        );
+    }
+
+
+    public void excluirUsuario(
+            Usuario usuario,
+            ViagemRepository.CadastroCallback callback
+    ) {
+
+        repository.excluirUsuario(
+                usuario,
+                callback
+        );
     }
 }

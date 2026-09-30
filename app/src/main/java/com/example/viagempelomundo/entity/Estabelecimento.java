@@ -1,9 +1,24 @@
 package com.example.viagempelomundo.entity;
 
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "estabelecimentos")
+@Entity(
+        tableName = "estabelecimentos",
+        foreignKeys = {
+                @ForeignKey(
+                        entity = Categoria.class,
+                        parentColumns = "id",
+                        childColumns = "categoriaId",
+                        onDelete = ForeignKey.CASCADE
+                )
+        },
+        indices = {
+                @Index("categoriaId")
+        }
+)
 public class Estabelecimento {
 
     @PrimaryKey(autoGenerate = true)
@@ -13,11 +28,12 @@ public class Estabelecimento {
     private String continente;
     private String pais;
     private String cidade;
-    private String tipo;
+
+    private int categoriaId;
+
     private String endereco;
     private String horario;
     private String descricao;
-
     private String caminhoImagem;
 
 
@@ -26,7 +42,7 @@ public class Estabelecimento {
             String continente,
             String pais,
             String cidade,
-            String tipo,
+            int categoriaId,
             String endereco,
             String horario,
             String descricao,
@@ -37,7 +53,9 @@ public class Estabelecimento {
         this.continente = continente;
         this.pais = pais;
         this.cidade = cidade;
-        this.tipo = tipo;
+
+        this.categoriaId = categoriaId;
+
         this.endereco = endereco;
         this.horario = horario;
         this.descricao = descricao;
@@ -95,13 +113,13 @@ public class Estabelecimento {
     }
 
 
-    public String getTipo() {
-        return tipo;
+    public int getCategoriaId() {
+        return categoriaId;
     }
 
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setCategoriaId(int categoriaId) {
+        this.categoriaId = categoriaId;
     }
 
 
