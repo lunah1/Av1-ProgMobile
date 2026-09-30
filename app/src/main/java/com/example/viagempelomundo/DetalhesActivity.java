@@ -2,7 +2,6 @@ package com.example.viagempelomundo;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -10,145 +9,223 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class DetalhesActivity extends AppCompatActivity {
 
+    private ImageView imgDetalhe;
+
+    private TextView txtNome;
+    private TextView txtDescricao;
+    private TextView txtInformacaoExtra;
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(
+            Bundle savedInstanceState
+    ) {
 
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_detalhes);
+        setContentView(
+                R.layout.activity_detalhes
+        );
 
-        ImageView imagem =
-                findViewById(R.id.img_detalhe);
 
-        TextView nome =
-                findViewById(R.id.txt_nome_detalhe);
+        inicializarViews();
 
-        TextView endereco =
-                findViewById(R.id.txt_endereco_detalhe);
+        carregarDados();
+    }
 
-        TextView horario =
-                findViewById(R.id.txt_horario_detalhe);
 
-        TextView descricao =
-                findViewById(R.id.txt_descricao_detalhe);
+    private void inicializarViews() {
 
-        TextView ingredientes =
-                findViewById(R.id.txt_ingredientes_detalhe);
+        imgDetalhe =
+                findViewById(
+                        R.id.img_detalhe
+                );
 
-        TextView cultural =
-                findViewById(R.id.txt_cultural_detalhe);
+        txtNome =
+                findViewById(
+                        R.id.txt_nome_detalhe
+                );
 
-        Button btnEncerrar =
-                findViewById(R.id.btn_encerrar);
+        txtDescricao =
+                findViewById(
+                        R.id.txt_descricao_detalhe
+                );
 
+        txtInformacaoExtra =
+                findViewById(
+                        R.id.txt_informacao_extra
+                );
+    }
+
+
+    private void carregarDados() {
 
         String tipoItem =
-                getIntent().getStringExtra("tipo_item");
+                getIntent().getStringExtra(
+                        "tipo_item"
+                );
 
-        String nomeRecebido =
-                getIntent().getStringExtra("nome");
 
-        String imagemRecebida =
+        String nome =
+                getIntent().getStringExtra(
+                        "nome"
+                );
+
+
+        String caminhoImagem =
                 getIntent().getStringExtra(
                         "imagem"
                 );
 
-        nome.setText(nomeRecebido);
 
-        if (imagemRecebida != null) {
+        txtNome.setText(
+                nome != null
+                        ? nome
+                        : "Detalhes"
+        );
 
-            int imagemId =
-                    getResources().getIdentifier(
-                            imagemRecebida,
-                            "drawable",
-                            getPackageName()
-                    );
 
-            if (imagemId != 0) {
-
-                imagem.setImageResource(imagemId);
-
-            } else {
-
-                imagem.setImageResource(
-                        android.R.drawable.ic_menu_gallery
-                );
-            }
-        }
+        carregarImagem(
+                caminhoImagem
+        );
 
 
         if ("prato".equals(tipoItem)) {
 
-            // Esconde os campos de estabelecimento
+            carregarPrato();
 
-            endereco.setVisibility(View.GONE);
-            horario.setVisibility(View.GONE);
-            descricao.setVisibility(View.GONE);
+        } else if ("estabelecimento".equals(tipoItem)) {
 
-
-            String ingredientesRecebidos =
-                    getIntent().getStringExtra(
-                            "ingredientes"
-                    );
-
-            String culturalRecebida =
-                    getIntent().getStringExtra(
-                            "informacao_cultural"
-                    );
+            carregarEstabelecimento();
+        }
+    }
 
 
-            ingredientes.setText(
-                    "Ingredientes: "
-                            + ingredientesRecebidos
+    private void carregarPrato() {
+
+        String ingredientes =
+                getIntent().getStringExtra(
+                        "ingredientes"
+                );
+
+
+        String informacaoCultural =
+                getIntent().getStringExtra(
+                        "informacao_cultural"
+                );
+
+
+        txtDescricao.setText(
+                "Ingredientes:\n\n"
+                        + textoSeguro(
+                        ingredientes
+                )
+        );
+
+
+        txtInformacaoExtra.setText(
+                "Informação cultural:\n\n"
+                        + textoSeguro(
+                        informacaoCultural
+                )
+        );
+
+
+        txtInformacaoExtra.setVisibility(
+                View.VISIBLE
+        );
+    }
+
+
+    private void carregarEstabelecimento() {
+
+        String endereco =
+                getIntent().getStringExtra(
+                        "endereco"
+                );
+
+
+        String horario =
+                getIntent().getStringExtra(
+                        "horario"
+                );
+
+
+        String descricao =
+                getIntent().getStringExtra(
+                        "descricao"
+                );
+
+
+        txtDescricao.setText(
+                textoSeguro(
+                        descricao
+                )
+        );
+
+
+        txtInformacaoExtra.setText(
+                "Endereço:\n"
+                        + textoSeguro(endereco)
+                        + "\n\nHorário:\n"
+                        + textoSeguro(horario)
+        );
+
+
+        txtInformacaoExtra.setVisibility(
+                View.VISIBLE
+        );
+    }
+
+
+    private void carregarImagem(
+            String caminhoImagem
+    ) {
+
+        if (caminhoImagem == null
+                || caminhoImagem.isEmpty()) {
+
+            imgDetalhe.setImageResource(
+                    android.R.drawable.ic_menu_gallery
             );
 
-            cultural.setText(
-                    "Informação cultural: "
-                            + culturalRecebida
+            return;
+        }
+
+
+        int resourceId =
+                getResources().getIdentifier(
+                        caminhoImagem,
+                        "drawable",
+                        getPackageName()
+                );
+
+
+        if (resourceId != 0) {
+
+            imgDetalhe.setImageResource(
+                    resourceId
             );
 
         } else {
 
-            // É um estabelecimento
-
-            ingredientes.setVisibility(View.GONE);
-            cultural.setVisibility(View.GONE);
-
-
-            String enderecoRecebido =
-                    getIntent().getStringExtra(
-                            "endereco"
-                    );
-
-            String horarioRecebido =
-                    getIntent().getStringExtra(
-                            "horario"
-                    );
-
-            String descricaoRecebida =
-                    getIntent().getStringExtra(
-                            "descricao"
-                    );
-
-
-            endereco.setText(
-                    "Endereço: "
-                            + enderecoRecebido
-            );
-
-            horario.setText(
-                    "Horário: "
-                            + horarioRecebido
-            );
-
-            descricao.setText(
-                    descricaoRecebida
+            imgDetalhe.setImageResource(
+                    android.R.drawable.ic_menu_gallery
             );
         }
+    }
 
 
-        btnEncerrar.setOnClickListener(
-                v -> finish()
-        );
+    private String textoSeguro(
+            String texto
+    ) {
+
+        if (texto == null
+                || texto.trim().isEmpty()) {
+
+            return "Informação não disponível.";
+        }
+
+        return texto;
     }
 }

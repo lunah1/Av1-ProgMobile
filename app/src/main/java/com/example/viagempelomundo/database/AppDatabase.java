@@ -58,7 +58,6 @@ public abstract class AppDatabase
                                     AppDatabase.class,
                                     "viagem_database"
                             )
-                            .fallbackToDestructiveMigration()
                             .build();
         }
 

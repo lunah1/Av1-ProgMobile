@@ -232,12 +232,6 @@ public class PratosFragment
         );
 
 
-        intent.putExtra(
-                "audio",
-                prato.getCaminhoAudio()
-        );
-
-
         startActivity(
                 intent
         );
